@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepMaxx</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <style>
+        
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #9b59b6, #6a1b9a, #512da8);
+            color: #bbd0eb;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            overflow-x: hidden; 
+        }
+
+        @keyframes starryBackground {
+            from { background-position: 0 0; }
+            to { background-position: -10000px 10000px; }
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+       
+        html, body {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+       
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ffffff;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2 {
+            color: #f8f3ff;
+        }
+
+        h1 {
+            font-size: 3em;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 2em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+      
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 80px;
+            border-radius: 8px;
+            border: 1px solid #8e44ad;
+            background-color: #e1bee7;
+        }
+
+       
+        button {
+            padding: 10px 25px;
+            font-size: 18px;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #6a1b9a;
+        }
+
+        
+        .moon {
+            font-size: 60px;
+            color: #ffcc00;
+            margin-bottom: 10px;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        
+        .links {
+            margin-top: 20px;
+            color: #f8f3ff;
+        }
+
+        .links a {
+            color: #d1c4e9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .links a:hover {
+            color: #ffcc00;
+        }
+
+       
+        .result-section, .tips-section {
+            display: none;
+            opacity: 0;
+        }
+
+       
+        .reset-log {
+            margin-top: 20px;
+            background-color: #d32f2f;
+        }
+
+        .reset-log:hover {
+            background-color: #b71c1c;
+        }
+
+       
+        .recommended-sleep {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffcc00;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container fade-in">
+        <div class="moon float-animation">🌙</div>
+        <h1 class="float-animation">SleepMaxx</h1>
+
+        <div class="input-section fade-in">
+            <h2>Enter Your Sleep Duration</h2>
+            <label for="sleep-hours">How many hours did you sleep?</label><br><br>
+            <input type="number" id="sleep-hours" min="0" max="24" placeholder="Hours">
+            <button onclick="analyzeSleep()">Submit</button>
+        </div>
+
+        <div class="result-section fade-in">
+            <h2>Sleep Analysis</h2>
+            <p id="analysis"></p>
+            <p id="bedtime-suggestion"></p>
+        </div>
+
+        <div class="tips-section fade-in">
+            <h2>Tips for Better Sleep</h2>
+            <ul id="sleep-tips">
+                <li>Avoid screens 30 minutes before bed.</li>
+                <li>Maintain a consistent sleep schedule.</li>
+                <li>Limit caffeine in the afternoon.</li>
+                <li>Create a relaxing bedtime routine.</li>
+                <li>Keep your bedroom cool, quiet, and dark.</li>
+            </ul>
+        </div>
+
+        <div class="links">
+            <a href="weekly-summary.html">View Weekly Summary</a> |
+            <a href="settings.html">Set Sleep Goals</a> |
+            <a href="ambient-playground.html">Ambient Playground</a>
+        </div>
+
+        <div class="manual-input-section fade-in">
+            <h2>Manual Sleep Input</h2>
+            <label for="bedtime">Bedtime:</label><br>
+            <input type="time" id="bedtime"><br><br>
+
+            <label for="wakeup">Wake-up Time:</label><br>
+            <input type="time" id="wakeup"><br><br>
+
+            <label for="refresh-rating">How refreshed did you feel (1-10)?</label><br>
+            <input type="number" id="refresh-rating" min="1" max="10"><br><br>
+
+            <button onclick="calculateSleepData()">Submit</button>
+            <p class="recommended-sleep" id="recommended-sleep"></p> 
+        </div>
+
+    
+        <button class="reset-log" onclick="resetSleepLog()">Reset Log</button>
+    </div>
+
+    <script>
+        let sleepData = JSON.parse(localStorage.getItem("sleepData")) || [];
+
+        function analyzeSleep() {
+            const hoursInput = document.getElementById("sleep-hours").value;
+            const hours = parseFloat(hoursInput);
+            const analysisSection = document.querySelector(".result-section");
+            const tipsSection = document.querySelector(".tips-section");
+            const analysisText = document.getElementById("analysis");
+
+            if (isNaN(hours) || hours < 0 || hours > 24) {
+                alert("Please enter a valid number of hours between 0 and 24.");
+                return;
+            }
+
+           
+            analysisSection.style.display = "block";
+            tipsSection.style.display = "block";
+
+            let today = new Date().toLocaleDateString();
+
+
+
+            sleepData.push({ date: today, hours: hours });
+            localStorage.setItem("sleepData", JSON.stringify(sleepData));
+
+            if (hours < 6) {
+                analysisText.innerText = "You had less than 6 hours of sleep. Try to get more rest!";
+            } else if (hours >= 6 && hours <= 9) {
+                analysisText.innerText = "You had a healthy amount of sleep. Keep it up!";
+            } else {
+                analysisText.innerText = "You had more than 9 hours of sleep. Oversleeping may not be beneficial!";
+            }
+
+            // Calculate and display sleep tips dynamically based on hours
+            const tips = document.getElementById("sleep-tips");
+            if (hours < 6) {
+                tips.innerHTML = "<li>Try to relax before bed for better sleep.</li><li>Avoid caffeine and electronics before bed.</li>";
+            } else if (hours >= 6 && hours <= 9) {
+                tips.innerHTML = "<li>You're doing great! Keep your sleep schedule consistent.</li>";
+            } else {
+                tips.innerHTML = "<li>Consider setting an earlier alarm to avoid oversleeping.</li>";
+            }
+        }
+
+        function resetSleepLog() {
+            localStorage.removeItem("sleepData");
+            alert("Sleep log has been reset.");
+        }
+
+        function calculateSleepData() {
+            const bedtimeInput = document.getElementById("bedtime").value;
+            const wakeupInput = document.getElementById("wakeup").value;
+            const refreshRatingInput = document.getElementById("refresh-rating").value;
+
+            if (!bedtimeInput || !wakeupInput || !refreshRatingInput) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            const bedtime = new Date(`1970-01-01T${bedtimeInput}:00`);
+            const wakeup = new Date(`1970-01-01T${wakeupInput}:00`);
+
+            let sleepDuration = (wakeup - bedtime) / (1000 * 60 * 60); // Convert to hours
+
+            if (sleepDuration < 0) {
+                sleepDuration += 24; // Account for crossing midnight
+            }
+
+            const refreshRating = parseFloat(refreshRatingInput);
+
+            let recommendedSleep = '';
+
+            
+            if (refreshRating <= 5) {
+                recommendedSleep = "It looks like you aren't getting enough restful sleep. Try aiming for 8-9 hours of sleep.";
+            } else if (refreshRating > 5 && sleepDuration < 7) {
+                recommendedSleep = "You felt refreshed, but slightly more sleep could be beneficial. Try getting 7-8 hours.";
+            } else {
+                recommendedSleep = "Great! You're getting sufficient and restful sleep.";
+            }
+
+            document.getElementById("recommended-sleep").innerText = recommendedSleep;
+        }
+    </script>
+
+</body>
+
+</html>
