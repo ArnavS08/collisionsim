@@ -1,2 +1,2 @@
 ﻿# collisionsim
-Real time velocity application with inelastic collisions and collision counter. Momentum not conserved due to frictional dissipation.
+Real time velocity application using a mouse with inelastic collisions and collision counter. Momentum isn't conserved due to frictional dissipation.
